@@ -4,58 +4,59 @@ window.addEventListener('DOMContentLoaded', init);
 
 function init() {
   // 1. Element Selectors
+  // Using getElementById and querySelector as recommended
   const hornSelect = document.getElementById('horn-select');
-  const imageDisplay = document.querySelector('#expose img');
-  const audioPlayer = document.querySelector('audio');
+  const image = document.querySelector('#expose img');
+  const audio = document.querySelector('audio');
   
   const volumeSlider = document.getElementById('volume');
   const volumeIcon = document.querySelector('#volume-controls img');
   
   const playButton = document.querySelector('button');
 
-  // Initialize the confetti library (already included in your starter project)
-  const jsConfetti = new JS_Confetti(); 
+  // Initialize the confetti library (already included in the starter assets)
+  const jsConfetti = new JSConfetti();
 
-  // 2. Horn Selection
-  // When the dropdown changes, update the image and the audio source
+  // 2. Horn Selection Logic
+  // Listens for 'change' to update the visual and audio assets
   hornSelect.addEventListener('change', (event) => {
     const selectedHorn = event.target.value;
     
-    imageDisplay.src = `assets/images/${selectedHorn}.svg`;
-    imageDisplay.alt = `${selectedHorn} selected`;
-    audioPlayer.src = `assets/audio/${selectedHorn}.mp3`;
+    image.src = `assets/images/${selectedHorn}.svg`;
+    image.alt = `${selectedHorn} selected`;
+    audio.src = `assets/audio/${selectedHorn}.mp3`;
   });
 
-  // 3. Volume Control
-  // Using 'input' event so the icon updates in real-time as the slider moves
+  // 3. Volume Control Logic
+  // Listens for 'input' to update volume and icons in real-time
   volumeSlider.addEventListener('input', (event) => {
-    const volumeValue = event.target.value;
+    const vol = event.target.value;
     
-    // The audio element volume property ranges from 0.0 to 1.0
-    audioPlayer.volume = volumeValue / 100;
+    // Convert 0-100 slider value to 0.0-1.0 for the audio element
+    audio.volume = vol / 100;
 
-    // Update Volume Icons based on thresholds (0, 1-32, 33-66, 67-100)
-    if (volumeValue == 0) {
+    // Icon state logic based on thresholds
+    if (vol == 0) {
       volumeIcon.src = 'assets/icons/volume-level-0.svg';
-      volumeIcon.alt = 'Mute';
-    } else if (volumeValue < 33) {
+      volumeIcon.alt = 'Volume level 0';
+    } else if (vol < 33) {
       volumeIcon.src = 'assets/icons/volume-level-1.svg';
-      volumeIcon.alt = 'Volume Level 1';
-    } else if (volumeValue < 67) {
+      volumeIcon.alt = 'Volume level 1';
+    } else if (vol < 67) {
       volumeIcon.src = 'assets/icons/volume-level-2.svg';
-      volumeIcon.alt = 'Volume Level 2';
+      volumeIcon.alt = 'Volume level 2';
     } else {
       volumeIcon.src = 'assets/icons/volume-level-3.svg';
-      volumeIcon.alt = 'Volume Level 3';
+      volumeIcon.alt = 'Volume level 3';
     }
   });
 
-  // 4. Play Sound & Confetti
+  // 4. Play Button Logic
   playButton.addEventListener('click', () => {
-    // Play the audio sound
-    audioPlayer.play();
+    // Play the selected horn sound
+    audio.play();
 
-    // If "Party Horn" is selected, shoot confetti
+    // Special case: Trigger confetti only if 'Party Horn' is selected
     if (hornSelect.value === 'party-horn') {
       jsConfetti.addConfetti();
     }
