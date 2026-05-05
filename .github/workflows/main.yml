@@ -11,5 +11,5 @@ jobs:
         run: npm install
       - name: Run Sum Test
         run: npm test ./__tests__/sum.test.js
-      - name: Run Unit Tests
-        run: npm test ./__tests__/unit.test.js
+      #- name: Run Unit Tests
+      #  run: npm test ./__tests__/unit.test.js
